@@ -1,0 +1,188 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Pilot profile and preferred home airport hub for syncing focus flights.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user ID.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name.",
+          "maxLength": 120,
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified user email address.",
+          "maxLength": 200
+        },
+        "homeAirportCode": {
+          "type": "string",
+          "description": "Three-letter IATA code of preferred departure hub.",
+          "maxLength": 3,
+          "minLength": 3,
+          "pattern": "^[A-Z]{3}$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": ["uid", "displayName", "email", "homeAirportCode", "createdAt", "updatedAt"]
+    },
+    "FocusSession": {
+      "title": "FocusSession",
+      "description": "A recorded study flight session between an origin and destination airport.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique session identifier.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "originCode": {
+          "type": "string",
+          "description": "Departure IATA code.",
+          "maxLength": 3,
+          "minLength": 3,
+          "pattern": "^[A-Z]{3}$"
+        },
+        "originCity": {
+          "type": "string",
+          "description": "Departure city name in Arabic.",
+          "maxLength": 80,
+          "minLength": 1
+        },
+        "destinationCode": {
+          "type": "string",
+          "description": "Arrival IATA or station code.",
+          "maxLength": 3,
+          "minLength": 3,
+          "pattern": "^[A-Z]{3}$"
+        },
+        "destinationCity": {
+          "type": "string",
+          "description": "Arrival city or station name in Arabic.",
+          "maxLength": 80,
+          "minLength": 1
+        },
+        "destinationCountry": {
+          "type": "string",
+          "description": "Arrival country or orbit zone name in Arabic.",
+          "maxLength": 80,
+          "minLength": 1
+        },
+        "destinationType": {
+          "type": "string",
+          "description": "Type of destination.",
+          "enum": ["city", "island", "space"]
+        },
+        "vehicleType": {
+          "type": "string",
+          "description": "Selected aircraft or vessel model.",
+          "enum": ["jet", "propeller", "balloon", "concorde"]
+        },
+        "subject": {
+          "type": "string",
+          "description": "Study subject or task label.",
+          "maxLength": 140,
+          "minLength": 1
+        },
+        "flightNumber": {
+          "type": "string",
+          "description": "Generated flight callsign.",
+          "maxLength": 16,
+          "minLength": 2
+        },
+        "plannedMinutes": {
+          "type": "number",
+          "description": "Planned flight study duration in minutes (1-720)."
+        },
+        "completedMinutes": {
+          "type": "number",
+          "description": "Actual minutes flown in focus (0-720)."
+        },
+        "distanceKm": {
+          "type": "number",
+          "description": "Great-circle flight distance in kilometers."
+        },
+        "status": {
+          "type": "string",
+          "description": "Flight outcome status.",
+          "enum": ["completed", "cancelled"]
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Client ISO start timestamp.",
+          "maxLength": 40
+        },
+        "endedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Client ISO end timestamp.",
+          "maxLength": 40
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "originCode",
+        "originCity",
+        "destinationCode",
+        "destinationCity",
+        "destinationCountry",
+        "destinationType",
+        "vehicleType",
+        "subject",
+        "flightNumber",
+        "plannedMinutes",
+        "completedMinutes",
+        "distanceKm",
+        "status",
+        "startedAt",
+        "endedAt",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private user profile and home airport preference."
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": {
+        "$ref": "#/entities/FocusSession"
+      },
+      "description": "User-owned focus flight history records synced across devices."
+    }
+  }
+}

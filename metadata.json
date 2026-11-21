@@ -1,0 +1,6 @@
+{
+  "name": "رحلة تركيز",
+  "description": "مؤقت دراسي تفاعلي عبر خريطة طيران عالمية مع اختيار الوجهات حسب مدة الدراسة، تحفيز عند الوصول، ومزامنة سجل التركيز سحابياً.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
